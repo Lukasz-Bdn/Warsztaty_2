@@ -16,7 +16,7 @@ public class User {
 	
 	public User() {
 		super();
-		this.id = 01;
+		this.id = 0;
 		this.username = "";
 		this.email = "";
 		this.password = "";
@@ -72,7 +72,10 @@ public class User {
 		return id;
 	}
 	
-	public void save(Connection conn) throws SQLException {
+	public void saveToDb(Connection conn) throws SQLException {
+		/*
+		 * Saves an object to database.
+		 */
 		if (this.id == 0) {
 			String sql = "INSERT INTO users(username, email, password, user_group_id) "
 					+ "VALUES(?, ?, ?, ?);";
@@ -85,7 +88,7 @@ public class User {
 			ps.executeUpdate();
 			ResultSet gk = ps.getGeneratedKeys();
 			if (gk.next()) {
-				this.id = gk.getLong(1); // pobranie wygenerowanego automatycznie id
+				this.id = gk.getLong(1); // reads automatically generated id (AUTO_INCREMENT)
 			}
 			gk.close();
 			ps.close();
@@ -104,10 +107,23 @@ public class User {
 		}
 	}
 	
-	public static User getById(long id) {
-		String sql = "";
-		//exectute sql
-		User u = new User();
-		return u;
+	public static User loadUserById(Connection conn, int id) throws SQLException {
+		/*
+		 * Reads a record from users table in database and returns a User object that
+		 * represents it.
+		 */
+		String sql = "SELECT * FROM users WHERE id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			User loadedUser = new User();
+			loadedUser.id = rs.getInt(1);
+			loadedUser.username = rs.getString(2);
+			loadedUser.email = rs.getString(3);
+			loadedUser.password = rs.getString(4);
+			return loadedUser;
+		}
+		return null;
 	}
 }
