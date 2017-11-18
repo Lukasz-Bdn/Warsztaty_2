@@ -16,13 +16,13 @@ public class UserApp {
 			u.setUser_group_id(1); // normalnie bedzie obiekt user_group i z niego
 //			u.saveToDb(conn);
 			
-			User u2 = User.loadUserById(conn, 5);
+			User u2 = User.loadUserById(conn, 3);
 			try {
 				System.out.println(u2.getId() + " | " + u2.getUsername() + " | " + u2.getEmail());
 			} catch (NullPointerException e) {
 				System.out.println("Zwrocono null");;
 			}
-			u2.setEmail("jakis_janusz@janusze.pl");
+			u2.setEmail("inny_janusz@janusze.pl");
 			u2.saveToDb(conn);
 			User[] users = User.loadAllUsers(conn);
 			for (User user : users) {

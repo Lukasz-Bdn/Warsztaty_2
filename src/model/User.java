@@ -95,13 +95,14 @@ public class User {
 			ps.close();
 			
 		} else {
-			String sql = "UPDATE users SET username =?, email=?, password=? "
+			String sql = "UPDATE users SET username =?, email=?, password=?, user_group_id =? "
 					+ "WHERE id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, this.username);
 			ps.setString(2,  this.email);
 			ps.setString(3, this.password);
-			ps.setLong(4, this.id);
+			ps.setInt(4, this.user_group_id);
+			ps.setLong(5, this.id);
 			ps.executeUpdate();
 			ps.close();
 		}
@@ -118,10 +119,11 @@ public class User {
 		ResultSet rs = ps.executeQuery();
 		if (rs.next()) {
 			User loadedUser = new User();
-			loadedUser.id = rs.getInt(1);
-			loadedUser.username = rs.getString(2);
-			loadedUser.email = rs.getString(3);
-			loadedUser.password = rs.getString(4);
+			loadedUser.id = rs.getInt("id");
+			loadedUser.username = rs.getString("username");
+			loadedUser.email = rs.getString("email");
+			loadedUser.password = rs.getString("password");
+			loadedUser.user_group_id = rs.getInt("user_group_id");
 			ps.close();
 			return loadedUser;
 		}
