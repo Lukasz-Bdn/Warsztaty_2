@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -122,8 +123,33 @@ public class User {
 			loadedUser.username = rs.getString(2);
 			loadedUser.email = rs.getString(3);
 			loadedUser.password = rs.getString(4);
+			ps.close();
 			return loadedUser;
 		}
+		ps.close();
 		return null;
+	}
+	
+	public static User[] loadAllUsers(Connection conn) throws SQLException {
+		/*
+		 * Reads all records from users table in database and returns an array of 
+		 * user objects. This method is static.
+		 */
+		ArrayList<User> users = new ArrayList<User>();
+		String sql = "SELECT * FROM users;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			User loadedUser = new User();
+			loadedUser.id = rs.getInt(1);
+			loadedUser.username = rs.getString(2);
+			loadedUser.email = rs.getString(3);
+			loadedUser.password = rs.getString(4);
+			users.add(loadedUser);
+		}
+		rs.close();
+		User[] userArray = new User[users.size()];
+		userArray = users.toArray(userArray);
+		return userArray;
 	}
 }
