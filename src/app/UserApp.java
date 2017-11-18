@@ -22,6 +22,8 @@ public class UserApp {
 			} catch (NullPointerException e) {
 				System.out.println("Zwrocono null");;
 			}
+			u2.setEmail("jakis_janusz@janusze.pl");
+			u2.saveToDb(conn);
 			User[] users = User.loadAllUsers(conn);
 			for (User user : users) {
 				System.out.println(user.getUsername());
