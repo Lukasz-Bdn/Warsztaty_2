@@ -106,6 +106,15 @@ public class Exercise {
 		return exerciseArray;
 	}
 	
-	
+	public void deleteFromDb(Connection conn) throws SQLException {
+		if (this.id != 0) {
+			String sql = "DELETE FROM exercise WHERE id=?;";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, this.id);
+			ps.executeUpdate();
+			this.id = 0;
+			ps.close();
+		}
+	}
 	
 }

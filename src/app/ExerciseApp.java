@@ -21,6 +21,8 @@ public class ExerciseApp {
 		System.out.println(exercise2.getId() + " | " + exercise2.getTitle() 
 					+ " | " + exercise.getDescription());
 		
+		exercise2.deleteFromDb(conn);
+		
 		Exercise[] allExercises = Exercise.loadAll(conn);
 		for (Exercise ex : allExercises) {
 			System.out.println(ex.getId() + " | " + ex.getTitle() + " | " 
