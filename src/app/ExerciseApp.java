@@ -16,17 +16,22 @@ public class ExerciseApp {
 //		exercise.saveToDb(conn);
 //		System.out.println(exercise.getId() + " | " + exercise.getTitle());
 		
-		Exercise exercise2 = new Exercise();
-		exercise2 = Exercise.loadById(conn, 4);
-		System.out.println(exercise2.getId() + " | " + exercise2.getTitle() 
-					+ " | " + exercise.getDescription());
+//		Exercise exercise2 = new Exercise();
+//		exercise2 = Exercise.loadById(conn, 4);
+//		System.out.println(exercise2.getId() + " | " + exercise2.getTitle() 
+//					+ " | " + exercise.getDescription());
 		
-		exercise2.deleteFromDb(conn);
+//		exercise2.deleteFromDb(conn);
 		
-		Exercise[] allExercises = Exercise.loadAll(conn);
-		for (Exercise ex : allExercises) {
-			System.out.println(ex.getId() + " | " + ex.getTitle() + " | " 
-					+ ex.getDescription());
+//		Exercise[] allExercises = Exercise.loadAll(conn);
+//		for (Exercise ex : allExercises) {
+//			System.out.println(ex.getId() + " | " + ex.getTitle() + " | " 
+//					+ ex.getDescription());
+//		}
+		
+		Exercise[] exerciseById = Exercise.loadAllByUserId(conn, 7);
+		for (Exercise ex : exerciseById) {
+			System.out.println(ex.getId()+ " | " + ex.getTitle() + " | " + ex.getDescription());
 		}
 		
 		conn.close();

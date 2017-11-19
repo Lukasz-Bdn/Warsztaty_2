@@ -117,4 +117,29 @@ public class Exercise {
 		}
 	}
 	
+	public static Exercise[] loadAllByUserId(Connection conn, int id) throws SQLException {
+		ArrayList<Exercise> exerciseArrayList = new ArrayList<Exercise>();
+		String sql = "SELECT exercise.id,exercise.title,exercise.description "
+				+ "FROM users "
+				+ "JOIN solution ON users.id=solution.users_id "
+				+ "JOIN exercise ON solution.exercise_id=exercise.id "
+				+ "WHERE users.id=?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Exercise loadedExercise = new Exercise();
+			loadedExercise.id = rs.getInt("exercise.id");
+			loadedExercise.title = rs.getString("exercise.title");
+			loadedExercise.description = rs.getString("exercise.description");
+			exerciseArrayList.add(loadedExercise);			
+		}
+		rs.close();
+		ps.close();
+		Exercise[] exerciseArray = new Exercise[exerciseArrayList.size()];
+		exerciseArray = exerciseArrayList.toArray(exerciseArray);
+		return exerciseArray;
+		
+	}
+	
 }
