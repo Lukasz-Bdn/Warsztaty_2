@@ -153,4 +153,15 @@ public class User {
 		userArray = users.toArray(userArray);
 		return userArray;
 	}
+	
+	public void deleteFromDb(Connection conn) throws SQLException {
+		if (this.id != 0) {
+			String sql = "DELETE FROM users WHERE id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setLong(1, this.id);
+			ps.executeUpdate();
+			this.id = 0;
+			ps.close();
+		}
+	}
 }
