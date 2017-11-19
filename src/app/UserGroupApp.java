@@ -14,6 +14,12 @@ public class UserGroupApp {
 					+ "3306/warsztat_2?useSSL=false", "root", "coderslab");
 			UserGroup ug5 = new UserGroup("grupa6");
 //			ug5.saveToDb(conn);
+			
+			UserGroup ug = new UserGroup();
+			ug = UserGroup.loadById(conn, 5);
+			System.out.println(ug.getId() + " | " + ug.getName());
+			
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -124,6 +124,7 @@ public class User {
 			loadedUser.email = rs.getString("email");
 			loadedUser.password = rs.getString("password");
 			loadedUser.user_group_id = rs.getInt("user_group_id");
+			rs.close();
 			ps.close();
 			return loadedUser;
 		}
