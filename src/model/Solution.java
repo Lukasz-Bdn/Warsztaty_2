@@ -90,6 +90,19 @@ public class Solution {
 
 			rs.close();
 			ps.close();
+		} else {
+			String sql = "UPDATE solution SET updated= NOW(), description=?, exercise_id=?, users_id=?"
+					+ " WHERE id=?;";
+			PreparedStatement ps =conn.prepareStatement(sql);
+			ps.setString(1, this.description);
+			ps.setInt(2, this.exercise_id);
+			ps.setInt(3, this.users_id);
+			ps.setInt(4, this.id);
+			ps.executeUpdate();
+			Solution tempSolution = Solution.loadById(conn, this.id);
+			this.updated = tempSolution.updated;
+			
+			ps.close();
 		}
 	}
 	public static Solution loadById(Connection conn, int id) throws SQLException {
