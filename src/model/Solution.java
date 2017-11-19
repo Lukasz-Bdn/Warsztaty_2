@@ -1,5 +1,10 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Solution {
 	private int id;
 	private String created;
@@ -64,6 +69,47 @@ public class Solution {
 		return updated;
 	}
 	
-	
+	public void saveToDb(Connection conn) throws SQLException {
+		if (this.id == 0) {
+			String sql = "INSERT INTO " + "solution(created, updated, description, "
+					+ "exercise_id, users_id) "
+					+ "VALUES(NOW(), NOW(), ?, ?, ?);";
+			String[] generatedKeys = { "id"};
+			PreparedStatement ps = conn.prepareStatement(sql, generatedKeys);
+			ps.setString(1, this.description);
+			ps.setInt(2, this.exercise_id);
+			ps.setInt(3, this.users_id);
+			ps.executeUpdate();
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				this.id = rs.getInt(1);
+			}
+			Solution tempSolution = Solution.loadById(conn, this.id);
+			this.created = tempSolution.created;
+			this.updated = tempSolution.updated;
+
+			rs.close();
+			ps.close();
+		}
+	}
+	public static Solution loadById(Connection conn, int id) throws SQLException {
+		String sql = "SELECT * FROM solution WHERE id = ?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			Solution solution = new Solution();
+			solution.id = rs.getInt(1);
+			solution.created = rs.getString(2);
+			solution.updated = rs.getString(3);
+			solution.description = rs.getString(4);
+			solution.exercise_id = rs.getInt(5);
+			solution.users_id = rs.getInt(6);
+			rs.close();
+			ps.close();
+			return solution;
+		}
+		return null;		
+	}
 	
 }
