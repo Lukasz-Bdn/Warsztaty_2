@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import model.User;
 import model.UserGroup;
 
 public class UserGroupApp {
@@ -18,6 +19,13 @@ public class UserGroupApp {
 			UserGroup ug = new UserGroup();
 			ug = UserGroup.loadById(conn, 5);
 			System.out.println(ug.getId() + " | " + ug.getName());
+			
+			ug.deleteFromDb(conn);
+			
+			UserGroup[] ugAll = UserGroup.loadAll(conn);
+			for (UserGroup ugLoad : ugAll) {
+				System.out.println(ugLoad.getName());
+			}
 			
 			conn.close();
 		} catch (SQLException e) {

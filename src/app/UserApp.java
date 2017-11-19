@@ -26,7 +26,7 @@ public class UserApp {
 			}
 			u2.setEmail("inny_janusz@janusze.pl");
 //			u2.saveToDb(conn);
-			User[] users = User.loadAllUsers(conn);
+			User[] users = User.loadAll(conn);
 			for (User user : users) {
 				System.out.println(user.getUsername());
 			}

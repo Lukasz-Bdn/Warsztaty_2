@@ -132,7 +132,7 @@ public class User {
 		return null;
 	}
 	
-	public static User[] loadAllUsers(Connection conn) throws SQLException {
+	public static User[] loadAll(Connection conn) throws SQLException {
 		/*
 		 * Reads all records from users table in database and returns an array of 
 		 * user objects. This method is static.

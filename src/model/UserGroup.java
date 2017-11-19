@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserGroup {
 	private int id;
@@ -70,5 +71,34 @@ public class UserGroup {
 		}
 		ps.close();
 		return null;
+	}
+	
+	public static UserGroup[] loadAll(Connection conn) throws SQLException {
+		ArrayList<UserGroup> ugArrayList = new ArrayList<UserGroup>();
+		String sql = "SELECT * FROM user_group;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			UserGroup userGroup = new UserGroup();
+			userGroup.id = rs.getInt("id");
+			userGroup.name = rs.getString("name");
+			ugArrayList.add(userGroup);
+		}
+		ps.close();
+		rs.close();
+		UserGroup[] ugArray = new UserGroup[ugArrayList.size()];
+		ugArray = ugArrayList.toArray(ugArray);
+		return ugArray;
+	}
+	
+	public void deleteFromDb(Connection conn) throws SQLException {
+		if (this.id != 0) {
+			String sql = "DELETE FROM user_group WHERE id=?;";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, this.id);
+			ps.executeUpdate();
+			this.id = 0;
+			ps.close();
+		}
 	}
 }
