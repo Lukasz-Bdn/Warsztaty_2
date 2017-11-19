@@ -106,6 +106,7 @@ public class Solution {
 			ps.close();
 		}
 	}
+	
 	public static Solution loadById(Connection conn, int id) throws SQLException {
 		String sql = "SELECT * FROM solution WHERE id = ?";
 		PreparedStatement ps = conn.prepareStatement(sql);
@@ -147,6 +148,17 @@ public class Solution {
 		Solution[] solutionArray = new Solution[solutionArrayList.size()];
 		solutionArray = solutionArrayList.toArray(solutionArray);
 		return solutionArray;
+	}
+	
+	public void deleteFromDb(Connection conn) throws SQLException {
+		if (this.id != 0) {
+			String sql ="DELETE FROM solution WHERE id=?;";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, this.id);
+			ps.executeUpdate();
+			this.id = 0;
+			ps.close();
+		}
 	}
 	
 }

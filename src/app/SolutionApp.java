@@ -23,18 +23,24 @@ public class SolutionApp {
 //			+ " | " + solution2.getExercise_id() + " | " + solution2.getUsers_id());
 //			solution2.setDescription("jakis inny test");
 //			solution2.saveToDb(conn);
-//			Solution solution3 = Solution.loadById(conn, 7);
-//			System.out.println(solution3.getId() + " | " + solution3.getCreated() 
-//			+ " | " + solution3.getUpdated() + " | " + solution3.getDescription()
-//			+ " | " + solution3.getExercise_id() + " | " + solution3.getUsers_id());
+			Solution solution3 = Solution.loadById(conn, 7);
+			System.out.println(solution3.getId() + " | " + solution3.getCreated() 
+			+ " | " + solution3.getUpdated() + " | " + solution3.getDescription()
+			+ " | " + solution3.getExercise_id() + " | " + solution3.getUsers_id());
 			
-			Solution[] solution3 = Solution.loadAll(conn);
-			for (Solution sol : solution3) {
+			solution3.deleteFromDb(conn);
+			
+			System.out.println("---------------------------------------------");
+			
+			Solution[] solution4 = Solution.loadAll(conn);
+			for (Solution sol : solution4) {
 				System.out.println(sol.getId() + " | " + sol.getCreated() 
 				+ " | " + sol.getUpdated() + " | " + sol.getDescription()
 				+ " | " + sol.getExercise_id() + " | " + sol.getUsers_id());
 				
 			}
+			
+			
 
 			conn.close();
 		} catch (SQLException e) {
