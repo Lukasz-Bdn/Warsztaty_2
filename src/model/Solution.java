@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Solution {
 	private int id;
@@ -123,6 +124,29 @@ public class Solution {
 			return solution;
 		}
 		return null;		
+	}
+	
+	public static Solution[] loadAll(Connection conn) throws SQLException {
+		ArrayList<Solution> solutionArrayList = new ArrayList<Solution>();
+		String sql = "SELECT * FROM solution;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Solution loadedSolution = new Solution();
+			loadedSolution.id = rs.getInt("id");
+			loadedSolution.created = rs.getString("created");
+			loadedSolution.updated = rs.getString("updated");
+			loadedSolution.description = rs.getString("description");
+			loadedSolution.exercise_id = rs.getInt("exercise_id");
+			loadedSolution.users_id = rs.getInt("users_id");
+			solutionArrayList.add(loadedSolution);
+		}
+		
+		rs.close();
+		ps.close();
+		Solution[] solutionArray = new Solution[solutionArrayList.size()];
+		solutionArray = solutionArrayList.toArray(solutionArray);
+		return solutionArray;
 	}
 	
 }
