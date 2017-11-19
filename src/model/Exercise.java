@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Exercise {
 	private int id;
@@ -13,6 +14,8 @@ public class Exercise {
 	public Exercise() {
 		super();
 		this.id=0;
+		this.title = "";
+		this.description ="";
 	}
 	
 	public Exercise(String title, String description) {
@@ -45,7 +48,7 @@ public class Exercise {
 	public void saveToDb(Connection conn) throws SQLException {
 		if (this.id == 0) {
 			String sql = "INSERT INTO exercise(title, description) " + "VALUES(?, ?);";
-			String[] generatedKeys = { "id" };
+			String[] generatedKeys = { "ID" };
 			PreparedStatement ps = conn.prepareStatement(sql, generatedKeys);
 			ps.setString(1, this.title);
 			ps.setString(2, this.description);
@@ -65,7 +68,44 @@ public class Exercise {
 			ps.executeUpdate();
 			ps.close();
 		}
-		
 	}
+
+	public static Exercise loadById(Connection conn, int id) throws SQLException {
+		String sql = "SELECT * FROM exercise WHERE id=?;";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, id);
+		ResultSet rs = ps.executeQuery();
+		if (rs.next()) {
+			Exercise loadedExercise = new Exercise();
+			loadedExercise.id = rs.getInt("id");
+			loadedExercise.title = rs.getString("title");
+			loadedExercise.description = rs.getString("description");
+			rs.close();
+			ps.close();
+			return loadedExercise;
+		}
+		return null;
+	}
+	
+	public static Exercise[] loadAll(Connection conn) throws SQLException {
+		ArrayList<Exercise> exerciseArrList = new ArrayList<Exercise>();
+		String sql = "SELECT * FROM exercise";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Exercise loadedExercise = new Exercise();
+			loadedExercise.id = rs.getInt("id");
+			loadedExercise.title = rs.getString("title");
+			loadedExercise.description = rs.getString("description");
+			exerciseArrList.add(loadedExercise);
+		}
+		rs.close();
+		ps.close();
+		Exercise[] exerciseArray = new Exercise[exerciseArrList.size()];
+		exerciseArray = exerciseArrList.toArray(exerciseArray);
+		return exerciseArray;
+	}
+	
+	
 	
 }
