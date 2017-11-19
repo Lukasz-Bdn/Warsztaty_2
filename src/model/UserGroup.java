@@ -18,6 +18,7 @@ public class UserGroup {
 	
 	public UserGroup(String name) {
 		super();
+		this.id = 0;
 		this.name = name;
 	}
 
